@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AuthorRepo extends JpaRepository<Author, Long> {
-    Optional<Student> findByEmailAndIsActive(String email, boolean isActive);
+    Optional<Author> findByEmailAndIsActive(String email, boolean isActive);
 
     boolean existsByEmail(String email);
 }

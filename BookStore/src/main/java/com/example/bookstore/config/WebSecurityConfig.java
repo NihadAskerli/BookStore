@@ -1,8 +1,9 @@
 package com.example.bookstore.config;
 
-import com.company.yellowgo.exception.security.CustomBearerTokenAccessDeniedHandler;
-import com.company.yellowgo.exception.security.FilterExceptionHandler;
-import com.company.yellowgo.filter.AuthorizationFilter;
+
+import com.example.bookstore.exception.security.CustomBearerTokenAccessDeniedHandler;
+import com.example.bookstore.exception.security.FilterExceptionHandler;
+import com.example.bookstore.filter.AuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,26 +66,9 @@ public class WebSecurityConfig {
                     request.requestMatchers("/v1/auth/**").permitAll();
                     request.requestMatchers("/v2/auth/logout").authenticated();
                     request.requestMatchers("/v2/auth/**").permitAll();
-//                    company
-                    request.requestMatchers("/v1/company/**").hasRole("COMPANY");
-                    //user
-                    request.requestMatchers("/v1/user/**").hasRole("USER");
-//                    car
-                    request.requestMatchers("/v1/car/save").hasRole("COMPANY");
-                    request.requestMatchers("/v1/car/photo").hasRole("COMPANY");
-
-                    request.requestMatchers("/v1/car/all").permitAll();
-                    request.requestMatchers("/v1/car/{number}").permitAll();
-                    //rental
-                    request.requestMatchers("/v1/rent/**").hasRole("USER");
-                    //payment
-                    request.requestMatchers("/v1/payment/save").hasRole("USER");
-                    request.requestMatchers("/v1/payment/all").hasRole("USER");
-                    request.requestMatchers("/v1/payment/test").hasRole("COMPANY");
-                    // Test endpoints
-                    request.requestMatchers("/test").hasRole("USER");
-                    request.requestMatchers("/test/no-auth").permitAll();
-                    request.requestMatchers("/test2").permitAll();
+//                    test
+                    request.requestMatchers("/test/test2").hasRole("AUTHOR");
+                    request.requestMatchers("/test/get").hasRole("STUDENT");
 
                 })
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -97,8 +81,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://yellowgo.co","http://admin.yellowgo.co","http://172.16.0.3:7001",
-        "http://localhost:3000","http://127.16.0.3:5001","http://172.16.0.3:4001","http://localhost:3001"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

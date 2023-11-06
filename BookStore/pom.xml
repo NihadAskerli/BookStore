@@ -15,6 +15,8 @@
     <description>BookStore</description>
     <properties>
         <java.version>17</java.version>
+        <org.springdoc.springdoc-openapi-starter-webmvc-ui.version>2.0.3</org.springdoc.springdoc-openapi-starter-webmvc-ui.version>
+
         <io.jsonwebtoken.jjwt.version>0.11.5</io.jsonwebtoken.jjwt.version>
     </properties>
     <dependencies>
@@ -37,8 +39,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -98,6 +100,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+<!--        swagger  -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${org.springdoc.springdoc-openapi-starter-webmvc-ui.version}</version>
         </dependency>
     </dependencies>
 

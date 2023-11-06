@@ -1,6 +1,6 @@
 package com.example.bookstore.utils;
 
-import com.company.yellowgo.models.proporties.security.SecurityProperties;
+import com.example.bookstore.models.proporties.security.SecurityProperties;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 

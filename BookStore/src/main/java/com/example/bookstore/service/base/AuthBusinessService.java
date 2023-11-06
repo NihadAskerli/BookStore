@@ -17,7 +17,7 @@ public interface AuthBusinessService {
 
     void logout(HttpServletRequest httpServletRequest);
 
-    void setAuthentication(String email);
+
 
     RegisterResponse register(RegisterPayload registerPayload);
 

@@ -1,5 +1,5 @@
 
-package com.example.bookstore.service.user;
+package com.example.bookstore.service.userdetails;
 
 
 
@@ -7,8 +7,11 @@ import com.example.bookstore.models.entities.Author;
 import com.example.bookstore.models.entities.Student;
 import com.example.bookstore.models.security.LoggedInUserDetails;
 import com.example.bookstore.service.author.AuthorServiceImpl;
+import com.example.bookstore.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -46,6 +49,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     }
 
+    public void setAuthentication(String email) {
+        UserDetails userDetails = loadUserByUsername(email);
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getAuthorities())
+        );
+    }
 
 
 }

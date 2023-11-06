@@ -8,7 +8,7 @@ import java.util.List;
 public interface TokenService {
     void saveToken(Token token);
 
-    void deleteToken(HttpServletRequest httpServletRequest);
+    void deleteToken(String email);
 //
     List<Token> getAllToken(String email);
     boolean tokenExist(String token,String email);

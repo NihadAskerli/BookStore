@@ -2,11 +2,9 @@
 package com.example.bookstore.filter;
 
 
-import com.company.yellowgo.service.security.company.AccessTokenManagerCompany;
-import com.company.yellowgo.service.security.company.AuthBusinessServiceCompany;
-import com.company.yellowgo.service.security.user.AccessTokenManager;
-import com.company.yellowgo.service.security.user.AuthBusinessService;
-import com.company.yellowgo.service.token.TokenService;
+import com.example.bookstore.service.jwt.AccessTokenManager;
+import com.example.bookstore.service.token.TokenService;
+import com.example.bookstore.service.userdetails.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.company.yellowgo.constants.TokenConstants.PREFIX;
+import static com.example.bookstore.constants.TokenConstants.PREFIX;
 
 
 @Component
@@ -27,10 +25,7 @@ import static com.company.yellowgo.constants.TokenConstants.PREFIX;
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final AccessTokenManager accessTokenManager;
-    private final AccessTokenManagerCompany accessTokenManagerCompany;
-
-    private final AuthBusinessServiceCompany authBusinessServiceCompany;
-    private final AuthBusinessService authBusinessService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final TokenService tokenService;
 
     @Override
@@ -40,22 +35,22 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         System.out.println(token);
         if (Objects.nonNull(token) && token.startsWith(PREFIX)) {
             String decodeToken = token.substring(7);
-            String email=accessTokenManager.getEmail(decodeToken);
-            if (null !=email  && tokenService.tokenExist(decodeToken,email)) {
-                authBusinessService.setAuthentication(
+            String email = accessTokenManager.getEmail(decodeToken);
+            if (null != email && tokenService.tokenExist(decodeToken, email)) {
+                userDetailsService.setAuthentication(
                         accessTokenManager.getEmail(
                                 decodeToken
                         )
                 );
+            }
 
-            }
-            else if (null !=accessTokenManagerCompany.getEmail(decodeToken)  && tokenService.tokenExist(decodeToken,accessTokenManagerCompany.getEmail(decodeToken))) {
-                authBusinessServiceCompany.setAuthentication(
-                        accessTokenManagerCompany.getEmail(
-                                decodeToken
-                        )
-                );
-            }
+//            else if (null !=accessTokenManagerCompany.getEmail(decodeToken)  && tokenService.tokenExist(decodeToken,accessTokenManagerCompany.getEmail(decodeToken))) {
+//                authBusinessServiceCompany.setAuthentication(
+//                        accessTokenManagerCompany.getEmail(
+//                                decodeToken
+//                        )
+//                );
+//            }
 
         }
 

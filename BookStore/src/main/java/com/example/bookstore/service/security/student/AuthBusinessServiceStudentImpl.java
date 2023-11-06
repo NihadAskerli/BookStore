@@ -2,6 +2,7 @@
 package com.example.bookstore.service.security.student;
 
 import com.example.bookstore.exception.BaseException;
+import com.example.bookstore.models.dto.jwt.JwtDto;
 import com.example.bookstore.models.entities.Student;
 import com.example.bookstore.models.entities.Token;
 import com.example.bookstore.models.payload.auth.LoginPayload;
@@ -10,8 +11,10 @@ import com.example.bookstore.models.payload.auth.RegisterPayload;
 import com.example.bookstore.response.auth.LoginResponse;
 import com.example.bookstore.response.auth.RegisterResponse;
 import com.example.bookstore.service.base.AuthBusinessService;
+import com.example.bookstore.service.jwt.AccessTokenManager;
+import com.example.bookstore.service.jwt.RefreshTokenManager;
 import com.example.bookstore.service.token.TokenService;
-import com.example.bookstore.service.user.StudentService;
+import com.example.bookstore.service.student.StudentService;
 import com.example.bookstore.utils.EmailUtil;
 import com.example.bookstore.utils.OtpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,12 +22,10 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ import static com.example.bookstore.models.response.ErrorResponseMessages.*;
 public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
     private final AuthenticationManager authenticationManager;
     private final AccessTokenManager accessTokenManager;
+    private final RefreshTokenManager  refreshTokenManager;
     private final StudentService studentService;
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
@@ -51,7 +53,7 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
     @Override
     public LoginResponse login(LoginPayload payload) {
         LoginResponse loginResponse = prepareLoginResponse(payload.getEmail(), payload.isRememberMe());
-        if(studentService.findStudentByEmail(loginResponse.getEmail(),true).getRole().equals("ROLE_USER")){
+        if(studentService.findStudentByEmail(loginResponse.getEmail(),true).getRole().equals("ROLE_STUDENT")){
             authenticate(payload);
             return loginResponse;
         }else throw BaseException.of(PERMISSION_ERROR);
@@ -62,18 +64,13 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
 
     @Override
     public void logout(HttpServletRequest httpServletRequest) {
-        tokenService.deleteToken(httpServletRequest);
+        String token = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+        String email = accessTokenManager.getEmail(token);
+        tokenService.deleteToken(email);
 
     }
 
-    @Override
-    public void setAuthentication(String email) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getAuthorities())
-        );
-    }
 
     @Override
     public RegisterResponse register(RegisterPayload registerPayload) {
@@ -99,7 +96,7 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
 
     private void authenticate(LoginPayload request) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
 
@@ -111,9 +108,10 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
     private LoginResponse prepareLoginResponse(String email, boolean rememberMe) {
             Student student =studentService.findStudentByEmail(email,true);
         LoginResponse  response = LoginResponse.builder()
-                    .accessToken(accessTokenManager.generate(student))
-                    .email(student.getEmail())
-                    .build();
+                .accessToken(accessTokenManager.generate(JwtDto.builder().role(student.getRole()).email(student.getEmail()).id(student.getId()).build()))
+                .refreshToken(refreshTokenManager.generate(JwtDto.builder().rememberMe(rememberMe).role(student.getRole()).email(student.getEmail()).id(student.getId()).build()))
+                .email(student.getEmail())
+                .build();
         Token token=Token.builder().email(response.getEmail()).token(List.of(response.getAccessToken())).build();
             tokenService.saveToken(token);
         return response;
@@ -124,7 +122,7 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
             throw BaseException.of(EMAIL_ALREADY_REGISTERED);
         }
         Student student = objectMapper.convertValue(registerPayload, Student.class);
-        student.setRole("ROLE_USER");
+        student.setRole("ROLE_STUDENT");
         student.setPassword(passwordEncoder.encode(student.getPassword()));
         student.setIsActive(false);
         Token token=Token.builder().otp(otpUtil.generateOtp()).email(student.getEmail()).build();

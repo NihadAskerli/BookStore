@@ -1,25 +1,16 @@
-package com.example.bookstore.response.auth;
+package com.example.bookstore.models.dto.jwt;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LoginResponse {
-
-    String accessToken;
-
-    String refreshToken;
+@Builder
+public class JwtDto {
+    Long id;
     String email;
-
-
-
-
-
-
-
-
+    String role;
+    boolean rememberMe;
 }

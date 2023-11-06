@@ -3,6 +3,7 @@ package com.example.bookstore.service.security.author;
 
 
 import com.example.bookstore.exception.BaseException;
+import com.example.bookstore.models.dto.jwt.JwtDto;
 import com.example.bookstore.models.entities.Author;
 import com.example.bookstore.models.entities.Token;
 import com.example.bookstore.models.payload.auth.LoginPayload;
@@ -12,6 +13,8 @@ import com.example.bookstore.response.auth.LoginResponse;
 import com.example.bookstore.response.auth.RegisterResponse;
 import com.example.bookstore.service.author.AuthorService;
 import com.example.bookstore.service.base.AuthBusinessService;
+import com.example.bookstore.service.jwt.AccessTokenManager;
+import com.example.bookstore.service.jwt.RefreshTokenManager;
 import com.example.bookstore.service.token.TokenService;
 import com.example.bookstore.utils.EmailUtil;
 import com.example.bookstore.utils.OtpUtil;
@@ -20,7 +23,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -38,11 +41,11 @@ import static com.example.bookstore.models.response.ErrorResponseMessages.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Qualifier("student")
 public class AuthBusinessServiceAuthorImpl implements AuthBusinessService {
     private final AuthorService authorService;
     private final AuthenticationManager authenticationManager;
-    private final AccessTokenManagerAuthor accessTokenManagerAuthor;
+    private final AccessTokenManager accessTokenManager;
+    private final RefreshTokenManager refreshTokenManager;
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
     private final TokenService tokenService;
@@ -52,7 +55,7 @@ public class AuthBusinessServiceAuthorImpl implements AuthBusinessService {
 
     @Override
     public LoginResponse login(LoginPayload payload) {
-        if (authorService.findAuthorByEmail(payload.getEmail(), true).getRole().equals("ROLE_COMPANY")){
+        if (authorService.findAuthorByEmail(payload.getEmail(), true).getRole().equals("ROLE_AUTHOR")){
             LoginResponse loginResponse = prepareLoginResponse(payload.getEmail(), payload.isRememberMe());
             authenticate(payload);
             return loginResponse;
@@ -61,17 +64,12 @@ public class AuthBusinessServiceAuthorImpl implements AuthBusinessService {
 
     @Override
     public void logout(HttpServletRequest httpServletRequest) {
-        tokenService.deleteToken(httpServletRequest);
-
+        String token = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+        String email = accessTokenManager.getEmail(token);
+        tokenService.deleteToken(email);
     }
 
-    @Override
-    public void setAuthentication(String email) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getAuthorities())
-        );
-    }
+
 
     @Override
     public RegisterResponse register(RegisterPayload registerPayload) {
@@ -109,12 +107,13 @@ public class AuthBusinessServiceAuthorImpl implements AuthBusinessService {
     }
 
     private LoginResponse prepareLoginResponse(String email, boolean rememberMe) {
-        Author company = authorService.findAuthorByEmail(email, true);
+        Author author = authorService.findAuthorByEmail(email, true);
         LoginResponse response = LoginResponse.builder()
-                .accessToken(accessTokenManagerAuthor.generate(company))
-                .email(company.getEmail())
+                .accessToken(accessTokenManager.generate(JwtDto.builder().role(author.getRole()).email(author.getEmail()).id(author.getId()).build()))
+                .refreshToken(refreshTokenManager.generate(JwtDto.builder().rememberMe(rememberMe).role(author.getRole()).email(author.getEmail()).id(author.getId()).build()))
+                .email(author.getEmail())
                 .build();
-        Token token = Token.builder().email(response.getEmail()).token(List.of(response.getAccessToken())).build();
+        Token token = Token.builder().email(response.getEmail()).token(List.of(response.getAccessToken(),response.getRefreshToken())).build();
         tokenService.saveToken(token);
         return response;
     }

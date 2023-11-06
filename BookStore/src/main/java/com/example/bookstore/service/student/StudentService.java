@@ -1,5 +1,5 @@
 
-package com.example.bookstore.service.user;
+package com.example.bookstore.service.student;
 
 import com.example.bookstore.models.entities.Student;
 

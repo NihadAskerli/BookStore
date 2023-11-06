@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Student {
+public class Student implements Serializable {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -29,7 +30,6 @@ public class Student {
     )
     Long id;
     String name;
-    Integer age;
     String email;
     String password;
     String role;

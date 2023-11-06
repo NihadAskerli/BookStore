@@ -2,6 +2,7 @@ package com.example.bookstore.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,11 +15,9 @@ public class RedisConfig {
     public JedisConnectionFactory connectionFactory() {
 
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-//    configuration.setHostName("172.16.0.3");
-//        configuration.setPort(23646);
         configuration.setPort(6379);
         configuration.setHostName("localhost");
-
+//        configuration.setPassword(RedisPassword.of("docker"));
         return new JedisConnectionFactory(configuration);
 
     }

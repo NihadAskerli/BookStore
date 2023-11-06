@@ -1,12 +1,12 @@
 
-package com.example.bookstore.service.security.student;
+package com.example.bookstore.service.jwt;
 
 
 
-import com.example.bookstore.models.entities.Student;
+import com.example.bookstore.exception.BaseException;
+import com.example.bookstore.models.dto.jwt.JwtDto;
 import com.example.bookstore.models.proporties.security.SecurityProperties;
-import com.example.bookstore.service.base.TokenGenerator;
-import com.example.bookstore.service.base.TokenReader;
+import com.example.bookstore.service.base.JwtBase;
 import com.example.bookstore.service.getters.EmailGetter;
 import com.example.bookstore.utils.PublicPrivateKeyUtils;
 import io.jsonwebtoken.Claims;
@@ -24,23 +24,23 @@ import static com.example.bookstore.constants.TokenConstants.EMAIL_KEY;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class AccessTokenManager implements TokenGenerator<Student>,
-        TokenReader<Claims>, EmailGetter {
+public class AccessTokenManager implements JwtBase,
+        EmailGetter {
 
     private final SecurityProperties securityProperties;
 
     @Override
-    public String generate(Student obj) {
+    public String generate(JwtDto jwtDto) {
 
         Claims claims = Jwts.claims();
-        claims.put(EMAIL_KEY, obj.getEmail());
-        claims.put("role", obj.getRole());
+        claims.put(EMAIL_KEY, jwtDto.getEmail());
+        claims.put("role", jwtDto.getRole());
         claims.put("type", "ACCESS_TOKEN");
         Date now = new Date();
         Date exp = new Date(now.getTime() + securityProperties.getJwt().getAccessTokenValidityTime());
 
         return Jwts.builder()
-                .setSubject(String.valueOf(obj.getId()))
+                .setSubject(String.valueOf(jwtDto.getId()))
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .addClaims(claims)
@@ -62,10 +62,12 @@ public class AccessTokenManager implements TokenGenerator<Student>,
         } catch (Exception ex) {
             log.warn(ex.getMessage());
         }
-        String typeOfToken = claims.get("type", String.class);
-        if ("ACCESS_TOKEN".equals(typeOfToken)) {
-            return claims;
-        }else return null;
+        if(claims!=null){
+            String typeOfToken = claims.get("type", String.class);
+            if ("ACCESS_TOKEN".equals(typeOfToken)) {
+                return claims;
+            }else return null;
+      }else return null;
 
 
     }
