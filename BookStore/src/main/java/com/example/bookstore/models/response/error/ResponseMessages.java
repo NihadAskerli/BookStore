@@ -1,4 +1,4 @@
-package com.example.bookstore.models.response;
+package com.example.bookstore.models.response.error;
 
 import org.springframework.http.HttpStatus;
 

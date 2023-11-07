@@ -1,10 +1,7 @@
 package com.example.bookstore.models.entities;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
@@ -17,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Student implements Serializable {
     @Id
@@ -29,7 +27,7 @@ public class Student implements Serializable {
             allocationSize = 1
     )
     Long id;
-    String name;
+    String fullName;
     String email;
     String password;
     String role;
@@ -40,5 +38,5 @@ public class Student implements Serializable {
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    Set<Book> books = new HashSet<>();
+    List<Book> books;
 }

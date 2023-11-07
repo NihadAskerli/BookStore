@@ -1,4 +1,4 @@
-package com.example.bookstore.response.auth;
+package com.example.bookstore.models.response.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

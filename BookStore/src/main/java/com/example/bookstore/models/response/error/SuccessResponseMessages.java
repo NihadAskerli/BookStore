@@ -1,5 +1,5 @@
 
-package com.example.bookstore.models.response;
+package com.example.bookstore.models.response.error;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

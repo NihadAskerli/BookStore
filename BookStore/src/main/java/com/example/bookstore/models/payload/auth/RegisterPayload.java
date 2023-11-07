@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 public class RegisterPayload {
 
      @Pattern(regexp = "^[A-Za-z]+$", message = "Name must contain letters only")
-     String name;
+     String fullName;
      @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Please enter a valid email address")
      String email;
      @NotBlank

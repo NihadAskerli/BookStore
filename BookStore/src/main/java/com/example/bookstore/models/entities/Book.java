@@ -1,6 +1,7 @@
 package com.example.bookstore.models.entities;
 
 import jakarta.persistence.*;
+import jdk.dynalink.linker.LinkerServices;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,6 +35,6 @@ public class Book implements Serializable {
     @JoinColumn(name = "author_id",referencedColumnName = "id")
     Author author;
     @ManyToMany(mappedBy = "books")
-    Set<Student> students = new HashSet<>();
+    List<Student> students ;
 
 }

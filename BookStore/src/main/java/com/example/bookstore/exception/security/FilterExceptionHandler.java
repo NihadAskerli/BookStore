@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
-import static com.example.bookstore.models.response.ErrorResponseMessages.BEARER_TOKEN;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.BEARER_TOKEN;
 
 
 @Component

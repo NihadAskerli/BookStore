@@ -1,14 +1,14 @@
 package com.example.bookstore.exception;
 
 import com.example.bookstore.exception.types.NotFoundExceptionType;
-import com.example.bookstore.models.response.ResponseMessages;
+import com.example.bookstore.models.response.error.ResponseMessages;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Map;
 
-import static com.example.bookstore.models.response.ErrorResponseMessages.NOT_FOUND;
-import static com.example.bookstore.models.response.ErrorResponseMessages.UNEXPECTED;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.NOT_FOUND;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.UNEXPECTED;
 
 
 @EqualsAndHashCode(callSuper = true)

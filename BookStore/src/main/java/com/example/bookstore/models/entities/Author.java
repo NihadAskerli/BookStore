@@ -27,7 +27,7 @@ public class Author implements Serializable {
             allocationSize = 1
     )
     Long id;
-    String name;
+    String fullName;
     String email;
     String password;
     String role;

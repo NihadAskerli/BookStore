@@ -3,14 +3,14 @@ package com.example.bookstore.models.base;
 
 import com.example.bookstore.exception.BaseException;
 import com.example.bookstore.exception.types.NotFoundExceptionType;
-import com.example.bookstore.models.response.ResponseMessages;
+import com.example.bookstore.models.response.error.ResponseMessages;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 
-import static com.example.bookstore.models.response.ErrorResponseMessages.NOT_FOUND;
-import static com.example.bookstore.models.response.SuccessResponseMessages.SUCCESS;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.NOT_FOUND;
+import static com.example.bookstore.models.response.error.SuccessResponseMessages.SUCCESS;
 
 
 @Data

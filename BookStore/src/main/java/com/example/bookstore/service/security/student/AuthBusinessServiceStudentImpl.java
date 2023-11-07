@@ -8,8 +8,8 @@ import com.example.bookstore.models.entities.Token;
 import com.example.bookstore.models.payload.auth.LoginPayload;
 import com.example.bookstore.models.payload.auth.OtpPayload;
 import com.example.bookstore.models.payload.auth.RegisterPayload;
-import com.example.bookstore.response.auth.LoginResponse;
-import com.example.bookstore.response.auth.RegisterResponse;
+import com.example.bookstore.models.response.auth.LoginResponse;
+import com.example.bookstore.models.response.auth.RegisterResponse;
 import com.example.bookstore.service.base.AuthBusinessService;
 import com.example.bookstore.service.jwt.AccessTokenManager;
 import com.example.bookstore.service.jwt.RefreshTokenManager;
@@ -26,13 +26,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.bookstore.models.response.ErrorResponseMessages.*;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.*;
 
 
 @Service
@@ -43,7 +42,6 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
     private final AccessTokenManager accessTokenManager;
     private final RefreshTokenManager  refreshTokenManager;
     private final StudentService studentService;
-    private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
     private final TokenService tokenService;
     private final BCryptPasswordEncoder passwordEncoder;

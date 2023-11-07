@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
-import static com.example.bookstore.models.response.ErrorResponseMessages.PERMISSION_ERROR;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.PERMISSION_ERROR;
 
 
 @Component

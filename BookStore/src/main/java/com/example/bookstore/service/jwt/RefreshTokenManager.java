@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 import static com.example.bookstore.constants.TokenConstants.EMAIL_KEY;
-import static com.example.bookstore.models.response.ErrorResponseMessages.BEARER_TOKEN;
+import static com.example.bookstore.models.response.error.ErrorResponseMessages.BEARER_TOKEN;
 
 
 @Component
@@ -62,13 +62,12 @@ public class RefreshTokenManager implements JwtBase
         } catch (Exception ex) {
              log.warn(ex.getMessage());
         }
-
-        String typeOfToken = claims.get("type", String.class);
-
-        if (!"REFRESH_TOKEN".equals(typeOfToken)) {
-           throw  BaseException.of(BEARER_TOKEN);
-        }
-
+if(claims!=null){
+    String typeOfToken = claims.get("type", String.class);
+    if (!"REFRESH_TOKEN".equals(typeOfToken)) {
+        throw  BaseException.of(BEARER_TOKEN);
+    }
+}
         return claims;
     }
 
