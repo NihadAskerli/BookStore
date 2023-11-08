@@ -68,14 +68,20 @@ public class WebSecurityConfig {
                     request.requestMatchers("/v2/auth/logout").authenticated();
                     request.requestMatchers("/v2/auth/**").permitAll();
 //                    book
-                    request.requestMatchers(HttpMethod.GET,"/v1/book").hasRole("STUDENT");
+                    request.requestMatchers(HttpMethod.GET,"/v1/book").hasAnyRole("STUDENT","AUTHOR");
                     request.requestMatchers(HttpMethod.POST,"/v1/book").hasRole("AUTHOR");
+                    request.requestMatchers(HttpMethod.DELETE,"/v1/book").hasRole("AUTHOR");
+
 //                    author
                     request.requestMatchers(HttpMethod.DELETE,"/v1/author/id").hasRole("AUTHOR");
+//                    subscribe
+                    request.requestMatchers(HttpMethod.POST,"/v1/subscribe").hasAnyRole("STUDENT","AUTHOR");
+//                     read
+                    request.requestMatchers(HttpMethod.GET,"/v1/read/name").hasAnyRole("STUDENT","AUTHOR");
+                    request.requestMatchers(HttpMethod.POST,"/v1/read").hasAnyRole("STUDENT","AUTHOR");
+                    // student
+                    request.requestMatchers(HttpMethod.GET,"/v1/student/read").hasRole("STUDENT");
 
-//                    test
-                    request.requestMatchers("/test/test2").hasRole("AUTHOR");
-                    request.requestMatchers("/test/get").hasRole("STUDENT");
 
                 })
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)

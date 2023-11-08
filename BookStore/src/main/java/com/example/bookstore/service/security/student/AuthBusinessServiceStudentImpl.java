@@ -7,6 +7,7 @@ import com.example.bookstore.models.entities.Student;
 import com.example.bookstore.models.entities.Token;
 import com.example.bookstore.models.payload.auth.LoginPayload;
 import com.example.bookstore.models.payload.auth.OtpPayload;
+import com.example.bookstore.models.payload.auth.RefreshTokenPayload;
 import com.example.bookstore.models.payload.auth.RegisterPayload;
 import com.example.bookstore.models.response.auth.LoginResponse;
 import com.example.bookstore.models.response.auth.RegisterResponse;
@@ -15,6 +16,7 @@ import com.example.bookstore.service.jwt.AccessTokenManager;
 import com.example.bookstore.service.jwt.RefreshTokenManager;
 import com.example.bookstore.service.token.TokenService;
 import com.example.bookstore.service.student.StudentService;
+import com.example.bookstore.service.userdetails.UserDetailsServiceImpl;
 import com.example.bookstore.utils.EmailUtil;
 import com.example.bookstore.utils.OtpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +28,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +48,8 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
     private final StudentService studentService;
     private final ObjectMapper objectMapper;
     private final TokenService tokenService;
+    private final UserDetailsServiceImpl userDetailsService;
+
     private final BCryptPasswordEncoder passwordEncoder;
     private final OtpUtil otpUtil;
     private final EmailUtil emailUtil;
@@ -88,6 +94,16 @@ public class AuthBusinessServiceStudentImpl implements AuthBusinessService {
         }
     }
 
+    @Override
+    public LoginResponse refresh(RefreshTokenPayload payload) {
+        String email=refreshTokenManager.getEmail(payload.getRefreshToken());
+        if(tokenService.tokenExist(payload.getRefreshToken(),email)){
+            return prepareLoginResponse(
+                    refreshTokenManager.getEmail(payload.getRefreshToken()),
+                    payload.isRememberMe()
+            );
+        }else throw BaseException.of(BEARER_TOKEN);
+    }
 
 
     // private util methods

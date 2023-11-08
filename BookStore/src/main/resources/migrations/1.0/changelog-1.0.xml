@@ -20,4 +20,14 @@
             ALTER TABLE authors DROP COLUMN age;
         </sql>
     </changeSet>
+    <changeSet author="Nihad" id="delete_table">
+        <sql>
+            DROP TABLE student_book;
+        </sql>
+    </changeSet>
+    <changeSet author="Test" id="remove_seq">
+        <sql>
+            DROP table seq_students;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

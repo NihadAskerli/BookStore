@@ -8,6 +8,7 @@ import com.example.bookstore.models.entities.Author;
 import com.example.bookstore.models.entities.Token;
 import com.example.bookstore.models.payload.auth.LoginPayload;
 import com.example.bookstore.models.payload.auth.OtpPayload;
+import com.example.bookstore.models.payload.auth.RefreshTokenPayload;
 import com.example.bookstore.models.payload.auth.RegisterPayload;
 import com.example.bookstore.models.response.auth.LoginResponse;
 import com.example.bookstore.models.response.auth.RegisterResponse;
@@ -19,6 +20,7 @@ import com.example.bookstore.service.token.TokenService;
 import com.example.bookstore.utils.EmailUtil;
 import com.example.bookstore.utils.OtpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +46,7 @@ public class AuthBusinessServiceAuthorImpl implements AuthBusinessService {
     private final AuthenticationManager authenticationManager;
     private final AccessTokenManager accessTokenManager;
     private final RefreshTokenManager refreshTokenManager;
-    private final UserDetailsService userDetailsService;
+//    private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
     private final TokenService tokenService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -87,7 +89,16 @@ public class AuthBusinessServiceAuthorImpl implements AuthBusinessService {
         }
     }
 
-
+    @Override
+    public LoginResponse refresh(RefreshTokenPayload payload) {
+        String email=refreshTokenManager.getEmail(payload.getRefreshToken());
+        if(tokenService.tokenExist(payload.getRefreshToken(),email)){
+            return prepareLoginResponse(
+                    refreshTokenManager.getEmail(payload.getRefreshToken()),
+                    payload.isRememberMe()
+            );
+        }else throw BaseException.of(BEARER_TOKEN);
+    }
 
 
     // private util methods

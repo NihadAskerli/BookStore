@@ -20,10 +20,10 @@ public class Student implements Serializable {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "seq_students"
+            generator = "seq_student"
     )
     @SequenceGenerator(
-            name = "seq_students",
+            name = "seq_student",
             allocationSize = 1
     )
     Long id;
@@ -32,11 +32,9 @@ public class Student implements Serializable {
     String password;
     String role;
     Boolean isActive;
-    @ManyToMany
-    @JoinTable(
-            name = "student_book",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    List<Book> books;
+    @OneToMany(mappedBy = "student")
+    List<Read> read;
+    @OneToMany(mappedBy = "student")
+    List<Subscribe>subscribes;
+
 }

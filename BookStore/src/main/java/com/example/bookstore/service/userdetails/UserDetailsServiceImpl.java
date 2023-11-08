@@ -6,6 +6,7 @@ package com.example.bookstore.service.userdetails;
 import com.example.bookstore.models.entities.Author;
 import com.example.bookstore.models.entities.Student;
 import com.example.bookstore.models.security.LoggedInUserDetails;
+import com.example.bookstore.service.author.AuthorService;
 import com.example.bookstore.service.author.AuthorServiceImpl;
 import com.example.bookstore.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final StudentService studentService;
-    private final AuthorServiceImpl authorService;
+    private final AuthorService authorService;
     @Override
     public UserDetails loadUserByUsername(String username) {
         if (studentService.checkEmail(username)) {
@@ -48,13 +50,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
     }
-
     public void setAuthentication(String email) {
         UserDetails userDetails = loadUserByUsername(email);
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getAuthorities())
         );
     }
+
+
 
 
 }

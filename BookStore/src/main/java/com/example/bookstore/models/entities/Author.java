@@ -33,8 +33,9 @@ public class Author implements Serializable {
     String role;
     Boolean isActive;
     @OneToMany(mappedBy = "author")
-    List<Book> book;
-
+    List<Book> books;
+    @OneToMany(mappedBy = "author")
+    List<Subscribe> subscribes;
 
 
 

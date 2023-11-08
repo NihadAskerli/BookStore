@@ -4,6 +4,7 @@ package com.example.bookstore.service.base;
 
 import com.example.bookstore.models.payload.auth.LoginPayload;
 import com.example.bookstore.models.payload.auth.OtpPayload;
+import com.example.bookstore.models.payload.auth.RefreshTokenPayload;
 import com.example.bookstore.models.payload.auth.RegisterPayload;
 import com.example.bookstore.models.response.auth.LoginResponse;
 import com.example.bookstore.models.response.auth.RegisterResponse;
@@ -23,6 +24,7 @@ public interface AuthBusinessService {
 
 
     void verifyOtp(OtpPayload otpPayload);
+    LoginResponse refresh(RefreshTokenPayload payload);
 
 
 

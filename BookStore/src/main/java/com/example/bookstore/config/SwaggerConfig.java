@@ -30,7 +30,7 @@ public class SwaggerConfig {
         contact.setName("BezKoder");
 
         Info info = new Info()
-                .title("YellowGo")
+                .title("BookStore")
                 .version("1.0")
                 .contact(contact)
                 .description("This API exposes endpoints to manage tutorials.");

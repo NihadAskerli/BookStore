@@ -3,7 +3,6 @@ package com.example.bookstore.controller;
 import com.example.bookstore.models.base.BaseResponse;
 import com.example.bookstore.models.payload.book.BookPayload;
 import com.example.bookstore.models.response.book.BookResponse;
-import com.example.bookstore.models.response.student.StudentResponse;
 import com.example.bookstore.service.book.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -27,8 +26,9 @@ public class BookController {
         bookService.saveBook(bookPayload, token);
         return BaseResponse.success();
     }
-    @GetMapping("/name")
-    public BaseResponse<List<StudentResponse>> getAllReader(@RequestParam("name")String name){
-        return BaseResponse.success(bookService.getAllStudentByBook(name));
+    @DeleteMapping
+    public BaseResponse<Void>deleteBook(@RequestParam("id")Long id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        bookService.deleteBook(id,token);
+        return BaseResponse.success();
     }
 }

@@ -34,7 +34,14 @@ public class Book implements Serializable {
     @ManyToOne
     @JoinColumn(name = "author_id",referencedColumnName = "id")
     Author author;
-    @ManyToMany(mappedBy = "books")
-    List<Student> students ;
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
+    List<Read>reads ;
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

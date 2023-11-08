@@ -9,6 +9,6 @@ public interface AuthorService {
     Author findAuthorByEmail(String email,boolean value);
 
     boolean checkEmail(String email);
-    void deleteBook(String token,Long id);
+
 
 }

@@ -3,6 +3,7 @@ package com.example.bookstore.filter;
 
 
 import com.example.bookstore.service.jwt.AccessTokenManager;
+import com.example.bookstore.service.security.student.AuthBusinessServiceStudentImpl;
 import com.example.bookstore.service.token.TokenService;
 import com.example.bookstore.service.userdetails.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -25,6 +26,7 @@ import static com.example.bookstore.constants.TokenConstants.PREFIX;
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final AccessTokenManager accessTokenManager;
+    private final AuthBusinessServiceStudentImpl authBusinessServiceStudent;
     private final UserDetailsServiceImpl userDetailsService;
     private final TokenService tokenService;
 
@@ -43,15 +45,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                         )
                 );
             }
-
-//            else if (null !=accessTokenManagerCompany.getEmail(decodeToken)  && tokenService.tokenExist(decodeToken,accessTokenManagerCompany.getEmail(decodeToken))) {
-//                authBusinessServiceCompany.setAuthentication(
-//                        accessTokenManagerCompany.getEmail(
-//                                decodeToken
-//                        )
-//                );
-//            }
-
         }
 
         filterChain.doFilter(request, response);

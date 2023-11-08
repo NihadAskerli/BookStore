@@ -23,7 +23,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author findAuthorByEmail(String email, boolean value) {
-        return authorRepo.findByEmailAndIsActive(email, value).orElseThrow(() -> BaseException.notFound(Author.class.getName(), "email", email));
+        return authorRepo.findByEmailAndIsActive(email, value).orElseThrow(() -> BaseException.notFound(Author.class.getSimpleName(), "email", email));
     }
 
     @Override
@@ -31,18 +31,5 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepo.existsByEmail(email);
     }
 
-    @Override
-    public void deleteBook(String token, Long id) {
-        String email = accessTokenManager.getEmail(token.substring(7));
-       Author author=findAuthorByEmail (email, true);
-        List<Book>books=author.getBook();
-        for (Book book:books
-             ) {
-            if(book.getId().equals(id)){
-                books.remove(book);
-            }
-        }
-        author.setBook(books);
-        saveAuthor(author);
-    }
+
 }
