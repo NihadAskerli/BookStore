@@ -21,12 +21,12 @@ private final ObjectMapper objectMapper;
 
     @Override
     public void run(String... args) throws Exception {
-        String message = "yeni bir kitab yaradildi " +
-                "adi-" +"test " +
-                "muellif adi-" + "test";
-//        objectMapper.writeValue(new File("test.json"),kafkaDto);
-        String kafkaDto=KafkaDto.builder().message(message).email("test@gmail.com").build().toString();
-        KafkaDto kafkaDto1=objectMapper.readValue(kafkaDto,KafkaDto.class);
-        System.out.println(kafkaDto1);
+//        String message = "yeni bir kitab yaradildi " +
+//                "adi-" +"test " +
+//                "muellif adi-" + "test";
+////        objectMapper.writeValue(new File("test.json"),kafkaDto);
+//        String kafkaDto=KafkaDto.builder().message(message).email("test@gmail.com").build().toString();
+//        KafkaDto kafkaDto1=objectMapper.readValue(kafkaDto,KafkaDto.class);
+//        System.out.println(kafkaDto1);
     }
 }

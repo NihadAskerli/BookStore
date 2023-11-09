@@ -3,31 +3,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <include file="/migrations/1.0/entities/student.xml"/>
+    <include file="/migrations/1.0/entities/author.xml"/>
+    <include file="/migrations/1.0/entities/book.xml"/>
+    <include file="/migrations/1.0/entities/subscribe.xml"/>
+    <include file="/migrations/1.0/entities/read.xml"/>
+    <include file="/migrations/1.0/sequences/sequences.xml"/>
 
-    <changeSet id="delete" author="Nihad">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="students" columnName="age" />
-        </preConditions>
-        <sql>
-            ALTER TABLE students DROP COLUMN age;
-        </sql>
-    </changeSet>
-    <changeSet id="remove" author="Nihad">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="authors" columnName="age" />
-        </preConditions>
-        <sql>
-            ALTER TABLE authors DROP COLUMN age;
-        </sql>
-    </changeSet>
-    <changeSet author="Nihad" id="delete_table">
-        <sql>
-            DROP TABLE student_book;
-        </sql>
-    </changeSet>
-    <changeSet author="Test" id="remove_seq">
-        <sql>
-            DROP table seq_students;
-        </sql>
-    </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+        <changeSet id="delete" author="Nihad">
+            <preConditions onFail="MARK_RAN">
+                <columnExists tableName="students" columnName="age" />
+            </preConditions>
+            <sql>
+                ALTER TABLE students DROP COLUMN age;
+            </sql>
+        </changeSet>
+        <changeSet id="remove" author="Nihad">
+            <preConditions onFail="MARK_RAN">
+                <columnExists tableName="authors" columnName="age" />
+            </preConditions>
+            <sql>
+                ALTER TABLE authors DROP COLUMN age;
+            </sql>
+        </changeSet>
+        <changeSet author="Nahid" id="delete_table">
+            <preConditions onFail="MARK_RAN">
+                <tableExists tableName="authors"  />
+            </preConditions>
+            <sql>
+                DROP TABLE student_book;
+            </sql>
+        </changeSet>
+        <changeSet author="Test" id="remove_seq">
+            <preConditions onFail="MARK_RAN">
+                <tableExists tableName="authors"  />
+            </preConditions>
+            <sql>
+                DROP table seq_students;
+            </sql>
+        </changeSet>
+
+
+
+
+</databaseChangeLog>

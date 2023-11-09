@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <changeSet id="createSubscribeTable" author="Nihad">
+        <createTable tableName="subscribes">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP"/>
+
+            <column name="student_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint  baseColumnNames="student_id"
+                                  baseTableName="subscribes"
+                                  constraintName="fk_authors_subscribes"
+                                  deferrable="false"
+                                  initiallyDeferred="false"
+                                  onDelete="NO ACTION"
+                                  onUpdate="NO ACTION"
+                                  referencedColumnNames="id"
+                                  referencedTableName="students"
+                                  validate="true"/>
+        <addForeignKeyConstraint  baseColumnNames="author_id"
+                                  baseTableName="subscribes"
+                                  constraintName="fk_student_subscribes"
+                                  deferrable="false"
+                                  initiallyDeferred="false"
+                                  onDelete="NO ACTION"
+                                  onUpdate="NO ACTION"
+                                  referencedColumnNames="id"
+                                  referencedTableName="authors"
+                                  validate="true"/>
+    </changeSet>
+
+
+</databaseChangeLog>

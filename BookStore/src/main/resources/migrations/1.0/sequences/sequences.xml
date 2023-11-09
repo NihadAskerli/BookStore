@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+
+    <changeSet id="createSequence" author="Nihad">
+        <createSequence sequenceName="seq_student"
+                        incrementBy="1"
+                        startValue="1"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        ordered="true"/>
+    </changeSet>
+    <changeSet id="createSequence4" author="Nihad">
+
+        <createSequence sequenceName="seq_book"
+                        incrementBy="1"
+                        startValue="1"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        ordered="true"/>
+    </changeSet>
+    <changeSet id="createSequence1" author="Nihad">
+
+        <createSequence sequenceName="seq_author"
+                        incrementBy="1"
+                        startValue="1"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        ordered="true"/>
+    </changeSet>
+    <changeSet id="createSequence2" author="Nihad">
+
+        <createSequence sequenceName="seq_read"
+                        incrementBy="1"
+                        startValue="1"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        ordered="true"/>
+    </changeSet>
+    <changeSet id="createSequence3" author="Nihad">
+
+        <createSequence sequenceName="seq_subscribe"
+                        incrementBy="1"
+                        startValue="1"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        ordered="true"/>
+    </changeSet>
+</databaseChangeLog>

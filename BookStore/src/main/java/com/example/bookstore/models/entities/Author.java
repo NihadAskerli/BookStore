@@ -27,6 +27,7 @@ public class Author implements Serializable {
             allocationSize = 1
     )
     Long id;
+    @Column(name = "full_name")
     String fullName;
     String email;
     String password;
