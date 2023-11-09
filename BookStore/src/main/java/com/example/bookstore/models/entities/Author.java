@@ -18,14 +18,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Author implements Serializable {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_author"
-    )
-    @SequenceGenerator(
-            name = "seq_author",
-            allocationSize = 1
-    )
     Long id;
     @Column(name = "full_name")
     String fullName;

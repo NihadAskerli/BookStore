@@ -16,14 +16,6 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Subscribe {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_read"
-    )
-    @SequenceGenerator(
-            name = "seq_read",
-            allocationSize = 1
-    )
     Long id;
     LocalDateTime date;
     @ManyToOne

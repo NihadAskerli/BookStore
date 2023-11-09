@@ -16,14 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Read {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_read"
-    )
-    @SequenceGenerator(
-            name = "seq_read",
-            allocationSize = 1
-    )
+
     Long id;
     LocalDate beginDate;
     LocalDate endDate;

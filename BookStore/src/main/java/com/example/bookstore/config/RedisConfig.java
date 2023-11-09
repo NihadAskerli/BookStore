@@ -1,5 +1,7 @@
 package com.example.bookstore.config;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisPassword;
@@ -11,13 +13,18 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfig {
+
+    @Value("#{'$redis.host'}")
+    private String host;
+
+
     @Bean
     public JedisConnectionFactory connectionFactory() {
 
+
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setPort(6379);
-        configuration.setHostName("localhost");
-//        configuration.setPassword(RedisPassword.of("docker"));
+        configuration.setHostName(host);
         return new JedisConnectionFactory(configuration);
 
     }

@@ -6,7 +6,7 @@
 
     <changeSet id="createSubscribeTable" author="Nihad">
         <createTable tableName="subscribes">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="date" type="TIMESTAMP"/>

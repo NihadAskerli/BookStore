@@ -1,7 +1,10 @@
+FROM maven as build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
 FROM openjdk:17
 WORKDIR /app
-COPY target/bookstore*.jar .
+COPY --from=build /app/target/*.jar /app/bookstore.jar
 EXPOSE 5000
-ARG JAR_FILE=./bookstore*.jar
-RUN mv ${JAR_FILE} ./bookstore.jar
-ENTRYPOINT ["java","-jar","./bookstore.jar"]
+ENTRYPOINT ["java","-jar","bookstore.jar"]

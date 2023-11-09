@@ -18,14 +18,6 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Student implements Serializable {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "seq_student"
-    )
-    @SequenceGenerator(
-            name = "seq_student",
-            allocationSize = 1
-    )
     Long id;
     @Column(name = "full_name")
     String fullName;
@@ -36,6 +28,6 @@ public class Student implements Serializable {
     @OneToMany(mappedBy = "student")
     List<Read> read;
     @OneToMany(mappedBy = "student")
-    List<Subscribe>subscribes;
+    List<Subscribe> subscribes;
 
 }
