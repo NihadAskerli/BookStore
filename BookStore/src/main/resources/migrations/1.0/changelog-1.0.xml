@@ -8,6 +8,5 @@
     <include file="/migrations/1.0/entities/book.xml"/>
     <include file="/migrations/1.0/entities/subscribe.xml"/>
     <include file="/migrations/1.0/entities/read.xml"/>
-<!--    <include file="/migrations/1.0/sequences/sequences.xml"/>-->
 
 </databaseChangeLog>

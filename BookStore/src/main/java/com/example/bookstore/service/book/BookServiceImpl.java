@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findBookByName(String bookName) {
         return bookRepo.findBookByName(bookName)
-                .orElseThrow(() -> BaseException.notFound(Book.class.getName(), "bookName", bookName));
+                .orElseThrow(() -> BaseException.notFound(Book.class.getSimpleName(), "bookName", bookName));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class BookServiceImpl implements BookService {
 
     //    private method
     private BookResponse convertBookResponse(Book book) {
-        return BookResponse.builder().name(book.getName()).authorName(book.getAuthor().getFullName()).build();
+        return BookResponse.builder().id(book.getId()).name(book.getName()).authorName(book.getAuthor().getFullName()).build();
     }
 
 }

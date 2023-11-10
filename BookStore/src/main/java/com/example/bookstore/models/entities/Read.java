@@ -16,6 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Read {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Long id;
     LocalDate beginDate;

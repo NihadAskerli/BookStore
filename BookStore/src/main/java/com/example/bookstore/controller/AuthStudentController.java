@@ -3,6 +3,7 @@ package com.example.bookstore.controller;
 import com.example.bookstore.models.base.BaseResponse;
 import com.example.bookstore.models.payload.auth.LoginPayload;
 import com.example.bookstore.models.payload.auth.OtpPayload;
+import com.example.bookstore.models.payload.auth.RefreshTokenPayload;
 import com.example.bookstore.models.payload.auth.RegisterPayload;
 import com.example.bookstore.models.response.auth.LoginResponse;
 import com.example.bookstore.models.response.auth.RegisterResponse;
@@ -43,5 +44,10 @@ public class AuthStudentController {
     public BaseResponse<RegisterResponse> register(@RequestBody
                                                    @Valid RegisterPayload registerPayload) {
         return BaseResponse.success(authBusinessService.register(registerPayload));
+    }
+    @PostMapping("/token/refresh")
+    public BaseResponse<LoginResponse> refresh(@RequestBody
+                                               RefreshTokenPayload payload) {
+        return BaseResponse.success(authBusinessService.refresh(payload));
     }
 }

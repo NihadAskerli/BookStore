@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Subscribe {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     LocalDateTime date;
     @ManyToOne

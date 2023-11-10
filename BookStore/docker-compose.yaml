@@ -1,79 +1,71 @@
-  version: '3.8'
-  services:
-    book-store:
-      build:
-        context: .
-      image: book_store:niko
-#      depends_on:
-#        - mysql
-#        - redis
-#        - zookeeper
-#        - kafka
-#        - kafka-ui
-#      links:
-#        - mysql
-#        - redis
-#        - kafka
-      environment:
-        - DB_CONNECTION_IP=mysql
-        - KF_CONNECTION_IP=kafka
-        - KF_CONNECTION_PORT=9092
-        - RD_CONNECTION_IP=redis
-      ports:
-        - 5001:5001
-    mysql:
-      image: "mysql:8.0"
-      restart: always
-      ports:
-        - 3306:3306
-      environment:
-        MYSQL_ROOT_PASSWORD: test
-        MYSQL_DATABASE: bookstore
-        MYSQL_PASSWORD: test
-    redis:
-      container_name: book-store-redis
-      image: redis:latest
-      restart: always
-      ports:
-        - '6379:6379'
-    zookeeper:
-      image: "docker.io/bitnami/zookeeper:3"
-      ports:
-        - "2181:2181"
-      volumes:
-        - "zookeeper_data:/bitnami"
-      environment:
-        - ALLOW_ANONYMOUS_LOGIN=yes
-    kafka:
-      image: "docker.io/bitnami/kafka:2-debian-10"
-      ports:
-        - "9092:9092"
-      expose:
-        - "9093"
-      volumes:
-        - "kafka_data:/bitnami"
-      environment:
-        - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-        - ALLOW_PLAINTEXT_LISTENER=yes
-        - KAFKA_ADVERTISED_LISTENERS=INSIDE://kafka:9093,OUTSIDE://localhost:9092
-        - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-        - KAFKA_LISTENERS=INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
-        - KAFKA_INTER_BROKER_LISTENER_NAME=INSIDE
-        - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      depends_on:
-        - zookeeper
-    kafka-ui:
-      image: provectuslabs/kafka-ui
-      container_name: kafka-ui
-      ports:
-        - "9090:8080"
-      restart: always
-      environment:
-        - KAFKA_CLUSTERS_0_NAME=local
-        - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
-        - KAFKA_CLUSTERS_0_ZOOKEEPER=localhost:2181
-  volumes:
-    zookeeper_data:
-       driver: local
-    kafka_data:
-      driver: local
+version: '3.8'
+services:
+  book-store:
+    build:
+      context: .
+    image: book_store:niko
+    links:
+      - mysql
+      - redis
+    environment:
+      - DB_CONNECTION_IP=mysql
+      - RD_CONNECTION_IP=redis
+      - KF_CONNECTION_IP=kafka
+      - KF_CONNECTION_PORT=9093
+    ports:
+      - 5001:5000
+  mysql:
+    image: "mysql:latest"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: bookstore
+      MYSQL_PASSWORD: test
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+  zookeeper:
+    image: "docker.io/bitnami/zookeeper:3"
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: "docker.io/bitnami/kafka:2-debian-10"
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ADVERTISED_LISTENERS=INSIDE://kafka:9093,OUTSIDE://localhost:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      - KAFKA_LISTENERS=INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INSIDE
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    depends_on:
+      - zookeeper
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "9090:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=localhost:2181
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local

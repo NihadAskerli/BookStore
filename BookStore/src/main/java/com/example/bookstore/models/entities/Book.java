@@ -21,7 +21,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Book implements Serializable {
     @Id
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
     @ManyToOne

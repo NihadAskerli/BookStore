@@ -52,9 +52,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
     public void setAuthentication(String email) {
         UserDetails userDetails = loadUserByUsername(email);
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getAuthorities())
-        );
+        if(userDetails!=null){
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getAuthorities())
+            );
+        }
+
     }
 
 

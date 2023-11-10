@@ -18,6 +18,8 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Student implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Long id;
     @Column(name = "full_name")
     String fullName;
